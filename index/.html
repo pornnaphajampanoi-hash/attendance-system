@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wave | ระบบบันทึกผู้เข้าร่วมประชาคม</title>
+
+<style>
+:root {
+  --primary: #167d72;
+  --dark: #115e59;
+  --bg: #f2f7f6;
+  --white: #ffffff;
+  --text: #243746;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Tahoma, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+header {
+  background: linear-gradient(135deg, #115e59, #25a18e);
+  color: white;
+  padding: 25px 18px;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: auto;
+}
+
+header h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+
+header p {
+  margin: 0;
+  line-height: 1.7;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 22px auto;
+  padding: 0 15px;
+}
+
+nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+nav button {
+  background: white;
+  color: var(--dark);
+  border: 1px solid #c8e3dd;
+  padding: 11px 15px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+nav button.active,
+nav button:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.panel {
+  background: white;
+  border-radius: 13px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 12px #164e6310;
+}
+
+.panel h2 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat {
+  background: white;
+  border-radius: 12px;
+  padding: 18px;
+  border-left: 4px solid var(--primary);
+  box-shadow: 0 3px 12px #164e6310;
+}
+
+.stat span {
+  display: block;
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 10px;
+}
+
+.stat strong {
+  font-size: 28px;
+  color: var(--dark);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  font-size: 14px;
+  background: white;
+}
+
+.field {
+  margin-bottom: 14px;
+}
+
+button {
+  font-family: inherit;
+}
+
+.btn {
+  border: none;
+  border-radius: 7px;
+  padding: 11px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 3px 2px;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.btn-danger {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  min-width: 650px;
+}
+
+th, td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+}
+
+th {
+  background: #e9f5f2;
+  color: #115e59;
+}
+
+.badge {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.present {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.absent {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.muted {
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.hidden {
+  display: none !important;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+@media (max-width: 750px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  header h1 {
+    font-size: 22px;
+  }
+
+  .panel {
+    padding: 15px;
+  }
+}
+
+@media print {
+  header {
+    background: white;
+    color: black;
+    padding: 10px 0;
+  }
+
+  nav, .no-print, footer,
+  .edit-actions, #activityFormPanel,
+  #participantFormPanel {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+  }
+
+  .container {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .panel, .stat {
+    box-shadow: none;
+    border: 1px solid #ddd;
+    break-inside: avoid;
+  }
+
+  .stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  table {
+    min-width: 0;
+    font-size: 11px;
+  }
+
+  th, td {
+    padding: 6px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-content">
+    <h1>🌿 Wave</h1>
+    <p>ระบบบันทึกและตรวจสอบจำนวนผู้เข้าร่วมประชาคม</p>
+    <p>เทศบาลตำบลลาดยาว</p>
+  </div>
+</header>
+
+<main class="container">
+
+<nav class="no-print">
+  <button class="active" data-page="dashboard">📊 ภาพรวม</button>
+  <button data-page="activities">🏛️ กิจกรรมประชาคม</button>
+  <button data-page="participants">👥 รายชื่อผู้เข้าร่วม</button>
+  <button data-page="reports">📄 รายงานและสำรองข้อมูล</button>
+</nav>
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="page">
+
+  <div class="stats">
+    <div class="stat">
+      <span>กิจกรรมทั้งหมด</span>
+      <strong id="statActivities">0</strong>
+    </div>
+
+    <div class="stat">
+      <span>ผู้ลงทะเบียน</span>
+      <strong id="statRegistered">0</strong>
+    </div>
+
+    <div class="stat">
+      <span>ชาย / หญิง</span>
+      <strong id="statGender">0 / 0</strong>
+    </div>
+
+    <div class="stat">
+      <span>เข้าร่วมจริง</span>
+      <strong id="statPresent">0</strong>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>📋 กิจกรรมประชาคม</h2>
+    <p class="muted">เลือกกิจกรรมเพื่อดูรายชื่อและสรุปผลการเข้าร่วม</p>
+
+    <div class="field">
+      <label for="dashboardActivity">เลือกกิจกรรม</label>
+      <select id="dashboardActivity"></select>
+    </div>
+
+    <div id="activitySummary"></div>
+  </div>
+
+  <div class="panel">
+    <h2>📝 รายชื่อผู้เข้าร่วมล่าสุด</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ลำดับ</th>
+            <th>ชื่อ-นามสกุล</th>
+            <th>เพศ</th>
+            <th>สถานะ</th>
+          </tr>
+        </thead>
+        <tbody id="recentTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+</section>
+
+<!-- ACTIVITIES -->
+<section id="activities" class="page hidden">
+
+  <div class="panel" id="activityFormPanel">
+    <h2 id="activityFormTitle">➕ เพิ่มกิจกรรมประชาคม</h2>
+
+    <form id="activityForm">
+      <input type="hidden" id="activityId">
+
+      <div class="grid">
+        <div class="field">
+          <label for="activityName">ชื่อกิจกรรม *</label>
+          <input id="activityName" required
+                 placeholder="เช่น ประชาคมหมู่บ้าน">
+        </div>
+
+        <div class="field">
+          <label for="activityDate">วันที่จัดกิจกรรม *</label>
+          <input type="date" id="activityDate" required>
+        </div>
+
+        <div class="field">
+          <label for="activityTime">เวลา</label>
+          <input type="time" id="activityTime">
+        </div>
+
+        <div class="field">
+          <label for="activityLocation">สถานที่จัดกิจกรรม *</label>
+          <input id="activityLocation" required
+                 placeholder="ระบุสถานที่">
+        </div>
+
+        <div class="field">
+          <label for="activityVillage">หมู่บ้าน / ชุมชน</label>
+          <input id="activityVillage" placeholder="ระบุหมู่บ้านหรือชุมชน">
+        </div>
+
+        <div class="field">
+          <label for="activityNote">หมายเหตุ</label>
+          <input id="activityNote" placeholder="รายละเอียดเพิ่มเติม">
+        </div>
+      </div>
+
+      <button class="btn btn-primary" type="submit">บันทึกกิจกรรม</button>
+      <button class="btn btn-secondary" type="button"
+              onclick="resetActivityForm()">ล้างข้อมูล</button>
+    </form>
+  </div>
+
+  <div class="panel">
+    <h2>📚 รายการกิจกรรมทั้งหมด</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ชื่อกิจกรรม</th>
+            <th>วันที่</th>
+            <th>สถานที่</th>
+            <th>ผู้ลงทะเบียน</th>
+            <th>จัดการ</th>
+          </tr>
+        </thead>
+        <tbody id="activityTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+</section>
+
+<!-- PARTICIPANTS -->
+<section id="participants" class="page hidden">
+
+  <div class="panel" id="participantFormPanel">
+    <h2 id="participantFormTitle">➕ ลงทะเบียนผู้เข้าร่วม</h2>
+
+    <form id="participantForm">
+      <input type="hidden" id="participantId">
+
+      <div class="field">
+        <label for="participantActivity">กิจกรรมประชาคม *</label>
+        <select id="participantActivity" required></select>
+      </div>
+
+      <div class="grid">
+        <div class="field">
+          <label for="participantName">ชื่อ-นามสกุล *</label>
+          <input id="participantName" required
+                 placeholder="กรอกชื่อและนามสกุล">
+        </div>
+
+        <div class="field">
+          <label for="participantGender">เพศ *</label>
+          <select id="participantGender" required>
+            <option value="">-- เลือกเพศ --</option>
+            <option value="ชาย">ชาย</option>
+            <option value="หญิง">หญิง</option>
+            <option value="ไม่ระบุ">ไม่ระบุ</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="participantAge">อายุ</label>
+          <input type="number" id="participantAge"
+                 min="1" max="120" placeholder="อายุ">
+        </div>
+
+        <div class="field">
+          <label for="participantVillage">หมู่บ้าน / ชุมชน</label>
+          <input id="participantVillage" placeholder="ระบุหมู่บ้าน">
+        </div>
+
+        <div class="field">
+          <label for="participantPhone">เบอร์โทรศัพท์ (ไม่บังคับ)</label>
+          <input type="tel" id="participantPhone"
+                 placeholder="กรอกเบอร์โทรศัพท์">
+        </div>
+
+        <div class="field">
+          <label for="participantStatus">สถานะการเข้าร่วม *</label>
+          <select id="participantStatus" required>
+            <option value="มาเข้าร่วม">มาเข้าร่วม</option>
+            <option value="ไม่มาเข้าร่วม">ไม่มาเข้าร่วม</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" type="submit">บันทึกรายชื่อ</button>
+      <button class="btn btn-secondary" type="button"
+              onclick="resetParticipantForm()">ล้างข้อมูล</button>
+    </form>
+  </div>
+
+  <div class="panel">
+    <h2>🔎 ค้นหาและตรวจสอบรายชื่อ</h2>
+
+    <div class="grid no-print">
+      <div class="field">
+        <label for="filterActivity">กิจกรรม</label>
+        <sel
